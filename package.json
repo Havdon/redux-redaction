@@ -2,7 +2,7 @@
   "name": "redux-redaction",
   "version": "0.0.1",
   "description": "Reducing code by deriving actions from reducers.",
-  "main": "dist/react-redaction.js",
+  "main": "dist/redux-redaction.js",
   "scripts": {
     "test": "mocha --require babel-register --require source-map-support/register",
     "coverage": "babel-node ./node_modules/.bin/isparta cover _mocha",
