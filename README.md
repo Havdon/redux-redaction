@@ -15,12 +15,15 @@ export createActions(rootReducer);
 /*
 Returns: 
 {
-   planeFunctionReducer: [Function],
-   redactionReducer: [Function],
-   nestedReducer: {
-      nestedReducerFunction: [Function]
+   togglePopup: () -> Action,
+   addErrors: () -> Action,
+   todos: {
+      deleteTodos: () -> Action
    }
 }
+
+Usage:
+dispatch(actions.todos.deleteTodos({ id: '123' }));
 */
 ```
 
@@ -38,26 +41,40 @@ export combineReducers(createReducers(rootReducer));
 // rootReducer.js
 import { redaction } from 'redux-redaction'
 
-export * as nestedReducer from './nestedReducer'
+export * as todos from './Todos.reducer'
 
-export const planeFunctionReducer = (state, action) => {
-  // Reduce state.
-  return state;
+export const defaultState = {
+   popupOpen: false,
+   errors: []
 };
 
-export const redactionReducer = redaction((data) => {
-    return { data }
+export const togglePopup = (state, action) => {
+  // Reduce state.
+  return {
+   ...state,
+   popupOpen: !state.popupOpen
+  }
+};
+
+export const addErrors = redaction((errorMsg) => {
+    return 'Error: ' + errorMsg;
 })
 .reduce((state, action) => {
-  const { data } = action.payload;
+  return {
+   ...state,
+   errors: [...state.errors, action.payload]
+  }
 });
 
 ```
 ```js
-// nestedReducer.js
+// Todos.reducer.js
 
-export const nestedReducerFunction = (state, action) => {
-  // ...
+export const defaultState = [];
+
+export const deleteTodo = (state, action) => {
+  const { id } = action.payload;
+  return state.filter(todo => (todo.id !== id));
 }
 
 ```
