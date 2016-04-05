@@ -7,11 +7,20 @@
 Utility methods for parsing a tree of reducers and derviving actions from them.
 
 ```js
-// actions.js
-import * as rootReducer from 'rootReducer';
-import { createActions } from 'redux-redaction'
+// redaction.js
+import { createRedaction } from 'redux-redaction'
+import rootReducer from './rootReducer';
 
-export createActions(rootReducer);
+export default createRedaction(rootReducer);
+
+```
+
+
+```js
+// actions.js
+import redaction from './redaction'
+
+export createActions(redaction.actions);
 /*
 Returns: 
 {
@@ -29,11 +38,9 @@ dispatch(actions.todos.deleteTodos({ id: '123' }));
 
 ```js
 // reducers.js
-import * as rootReducer from './rootReducer';
-import { combineReducers } from 'redux'
-import { createReducers } from 'redux-redaction'
+import redaction from './redaction'
 
-export combineReducers(createReducers(rootReducer));
+export redaction.reducer;
 
 ```
 
@@ -41,14 +48,14 @@ export combineReducers(createReducers(rootReducer));
 // rootReducer.js
 import { redaction } from 'redux-redaction'
 
-export * as todos from './Todos.reducer'
+import todos from './Todos.reducer'
 
-export const defaultState = {
+const initialState = {
    popupOpen: false,
    errors: []
 };
 
-export const togglePopup = (state, action) => {
+const togglePopup = (state, action) => {
   // Reduce state.
   return {
    ...state,
@@ -56,7 +63,7 @@ export const togglePopup = (state, action) => {
   }
 };
 
-export const addErrors = redaction((errorMsg) => {
+const addErrors = redaction((errorMsg) => {
     return 'Error: ' + errorMsg;
 })
 .reduce((state, action) => {
@@ -66,15 +73,28 @@ export const addErrors = redaction((errorMsg) => {
   }
 });
 
+export default {
+    initialState,
+    togglePopup,
+    addErrors,
+    todos
+}
+
+
 ```
 ```js
 // Todos.reducer.js
 
-export const defaultState = [];
+const initialState = [];
 
-export const deleteTodo = (state, action) => {
+const deleteTodo = (state, action) => {
   const { id } = action.payload;
   return state.filter(todo => (todo.id !== id));
+}
+
+export default {
+    initialState,
+    deleteTodo   
 }
 
 ```
