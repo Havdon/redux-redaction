@@ -11,38 +11,30 @@ Utility methods for parsing a tree of reducers and derviving actions from them.
 import { createRedaction } from 'redux-redaction'
 import rootReducer from './rootReducer';
 
-export default createRedaction(rootReducer);
+const redaction = createRedaction(rootReducer);
+export const actions = redaction.actions;
+export const reducer = redaction.reducer;
 
-```
-
-
-```js
-// actions.js
-import redaction from './redaction'
-
-export createActions(redaction.actions);
 /*
-Returns: 
+createRedaction returns: 
 {
-   togglePopup: () -> Action,
-   addErrors: () -> Action,
-   todos: {
-      deleteTodos: () -> Action
-   }
+   actions: {
+      togglePopup: () -> Action,
+      addErrors: () -> Action,
+      todos: {
+         deleteTodos: () -> Action
+      }
+   },
+   reducer: (state, action) -> state
 }
 
 Usage:
+import { actions } from './redaction'
 dispatch(actions.todos.deleteTodos({ id: '123' }));
+
 */
 ```
 
-```js
-// reducers.js
-import redaction from './redaction'
-
-export redaction.reducer;
-
-```
 
 ```js
 // rootReducer.js
