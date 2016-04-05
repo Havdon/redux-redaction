@@ -1,12 +1,10 @@
 
 
-import createActions from './createActions';
-import createReducers from './createReducers';
-import redaction from './redaction';
-
+import createRedaction from './createRedaction';
+import redaction, { Redaction } from './redaction';
 
 export {
-    createActions,
-    createReducers,
-    redaction
+    createRedaction,
+    redaction,
+    Redaction
 }

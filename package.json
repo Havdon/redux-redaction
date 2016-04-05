@@ -2,9 +2,9 @@
   "name": "redux-redaction",
   "version": "0.0.1",
   "description": "Reducing code by deriving actions from reducers.",
-  "main": "dist/redux-redaction.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "mocha --require babel-register --require source-map-support/register",
+    "test": "mocha --require babel-register",
     "coverage": "babel-node ./node_modules/.bin/isparta cover _mocha",
     "build": "webpack"
   },
@@ -24,7 +24,5 @@
     "source-map-support": "^0.4.0",
     "webpack": "^1.12.14"
   },
-  "dependencies": {
-    "redux-actions": "^0.9.1"
-  }
+  "dependencies": {}
 }

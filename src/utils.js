@@ -1,36 +1,20 @@
-import { Redaction } from './redaction';
-
-// Returns empty object if no redactions were found.
-export function mapRedaction(redaction, callback, parentName) {
-    var obj = {};
-    var isEmpty = true;
-    for (const key in redaction) {
-        const item = redaction[key];
-        const name = parentName ? `${parentName}.${key}` : key;
-        if (typeof item === 'object') {
-            if (item.__esModule === true) {
-                const value = mapRedaction(item, callback, name);
-                if (value) {
-                    obj[key] = value;
-                    isEmpty = false;
-                }
-            }
-            else if (item instanceof Redaction){
-                item.name = name;
-                const value = callback(item, name);
-                if (value) {
-                    obj[key] = value;
-                    isEmpty = false;
-                }
-            }
+export const pathMap = (obj, path, cb) => {
+    if (typeof path === 'string') path = path.split('.');
+    path = [...path];
+    const key = path.shift();
+    if (typeof obj[key] !== 'undefined') {
+        if (path.length > 0) {
+            return {
+                ...obj,
+                [key]: pathMap(obj[key], path, cb)
+            };
         }
-        else if (typeof item === 'function') {
-            const value = callback(item, name);
-            if (value) {
-                obj[key] = value;
-                isEmpty = false;
-            }
+        else {
+            return {
+                ...obj,
+                [key]: cb(obj[key])
+            };
         }
     }
-    return (!isEmpty || !parentName) ? obj : undefined;
+    return obj;
 }

@@ -1,8 +1,6 @@
-import { createAction } from 'redux-actions';
-
 export class Redaction {
-    constructor(payload) {
-        this.payload = payload;
+    constructor(actionFn) {
+        this.actionFn = actionFn;
         this.name = null;
     }
     
@@ -21,27 +19,16 @@ export class Redaction {
         return this;
     }
     
-    getPayload(...args) {
-        if (typeof this.payload === 'function')
-            return this.payload(...args);
+    getAction(...args) {
+        if (typeof this.actionFn === 'function')
+            return this.actionFn(...args);
         else
-            return this.payload;
-    }
-    
-    getActionCreator() {
-        if (!this.name) 
-            throw new Error('Redaction has no name!');
-       
-        const actionCreator = createAction(this.name);
-        return (...args) => {
-            const payload = this.getPayload(...args);
-            return actionCreator(payload);  
-        };
+            return this.actionFn;
     }
     
     
     
-    reducer(state, action = {}) {
+    handleReduce(state, action = {}) {
         if (Redaction.isPending(action)) {
             if (this.onPendingCb)
                 return this.onPendingCb(state, action);
