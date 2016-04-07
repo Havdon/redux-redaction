@@ -1,9 +1,7 @@
 import { pathMap } from './utils'
 import { Redaction } from './redaction'
 
-export default (mod) => {
-    return createRedaction(mod);
-}
+export default createRedaction;
 
 const isFunction = f => (Object.prototype.toString.call(f) === '[object Function]');
 
