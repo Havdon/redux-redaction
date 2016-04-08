@@ -22,6 +22,21 @@ describe('utils', function () {
             test(['a']);
             done();
         });
+
+        it('should map to root object if the path is empty or undefined/null', function(done) {
+            const test = (path) => {
+                const ret = pathMap(10, path, (state) => {
+                    return state + 5;
+                })
+                expect(ret).to.be.a('number');
+                expect(ret).to.equal(15);
+            }
+            test([]);
+            test('');
+            test();
+            test(null);
+            done();
+        });
         
         it('should map to 2nd depth', function (done) {
             const test = (path) => {

@@ -76,6 +76,7 @@ function createRedaction(mod, parentName) {
             const split = action.type.split('.');
             if (split.length == 1) return func(state, action);
             split.pop();
+            if (split[0] === parentName) split.shift();
             return pathMap(state, split, (subState) => {
                 return func(subState, action)
             })

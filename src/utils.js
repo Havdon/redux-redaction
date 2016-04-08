@@ -1,4 +1,5 @@
 export const pathMap = (obj, path, cb) => {
+    if (!path || path.length === 0) return cb(obj);
     if (typeof path === 'string') path = path.split('.');
     path = [...path];
     const key = path.shift();
